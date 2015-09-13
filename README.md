@@ -29,7 +29,7 @@ Munin stats aggregator and reporting
 
 ## Persistent example
 	docker run \
-	 -d --rm \
+	 -d \
 	 --name=munin \
 	 -p 127.0.0.1:8080:80 \
 	 -e THISNODENAME="munin.example.com" \
