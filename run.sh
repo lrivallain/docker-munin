@@ -1,7 +1,20 @@
 #!/bin/bash
-NODES=${NODES:-}
+
+# timezone settings
+TZ=${TZ:="Europe/Paris"}
+echo $TZ > /etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
+
+# change cron setting for updates
+CRONDELAY=${CRONDELAY:=5}
+sed -i "s/\*\/5/\*\/$CRONDELAY/g" /etc/cron.d/munin
+
+# configure default node name
+THISNODENAME=${THISNODENAME:="munin"}
+sed -i "s/^\[localhost\.localdomain\]/\[$THISNODENAME\]/g" /etc/munin/munin.conf
 
 # generate node list
+NODES=${NODES:-}
 for NODE in $NODES
 do
     NAME=`echo $NODE | cut -d ':' -f1`
@@ -25,12 +38,22 @@ Munin has not run yet.  Please try again in a few moments.
 </body>
 </html>
 EOF
+chown -R munin: /var/cache/munin/www/index.html
 
 # start cron
 /usr/sbin/cron &
+
 # start local munin-node
 /usr/sbin/munin-node > /dev/null 2>&1 &
+
+# confirm nodes
 echo "Using the following munin nodes:"
-echo $NODES
+echo " $THISNODENAME"
+echo " $NODES"
+
 # start apache
-/usr/sbin/apache2ctl -DFOREGROUND
+/usr/sbin/apache2ctl start
+
+# display logs
+touch /var/log/munin/munin-update.log
+tail -f /var/log/munin/munin-*.log
