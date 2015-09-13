@@ -4,6 +4,10 @@
 Munin stats aggregator and reporting
 
 * `docker build -t munin .`
+or
+* `docker pull lrivallain/munin`
+
+then
 * `docker run -p 80 munin`
 
 With a node list:
