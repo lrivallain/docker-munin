@@ -37,4 +37,3 @@ With a node list:
 	 -v /data/munin/logs:/var/log/munin \
 	 -v /data/munin/cache:/var/cache/munin \
 	 munin
-`
