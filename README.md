@@ -3,11 +3,14 @@
 ## Quickstart
 Munin stats aggregator and reporting
 
-* `docker build -t munin .`
-* `docker run -p 80 munin`
+### Build
+	git clone https://github.com/lrivallain/docker-munin.git
+	docker build -t munin .
+	docker run -p 80 munin
 
-With a node list:
-* `docker run -p 80 -e NODES="foo.local:127.0.0.1 bar.remote:1.2.3.4" munin`
+### Or pull
+	docker pull lrivallain/munin
+	docker run -p 80 lrivallain/munin:latest
 
 ## How it works
 ### Ports
@@ -26,7 +29,7 @@ With a node list:
 
 ## Persistent example
 	docker run \
-	 -d --rm \
+	 -d \
 	 --name=munin \
 	 -p 127.0.0.1:8080:80 \
 	 -e THISNODENAME="munin.example.com" \
