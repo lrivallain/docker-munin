@@ -28,17 +28,19 @@ EOF
 done
 
 # placeholder html to prevent permission error
-cat << EOF > /var/cache/munin/www/index.html
+if [ ! -f /var/cache/munin/www/index.html ]; then
+    cat << EOF > /var/cache/munin/www/index.html
 <html>
-<head>
-  <title>Munin</title>
-</head>
-<body>
-Munin has not run yet.  Please try again in a few moments.
-</body>
+  <head>
+    <title>Munin</title>
+  </head>
+  <body>
+    Munin has not run yet.  Please try again in a few moments.
+  </body>
 </html>
 EOF
-chown -R munin: /var/cache/munin/www/index.html
+    chown -R munin: /var/cache/munin/www/index.html
+fi
 
 # start cron
 /usr/sbin/cron &
